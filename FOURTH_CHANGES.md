@@ -42,13 +42,43 @@ This document tracks high-level changes made to the n8n fork.
 - Created `SETUP.md` - Quick start guide for development and Docker
 - Created `CHANGES.md` - This file for tracking changes
 
+## 2024-12-15 - White-labeling Configuration
+
+### Branding Decisions
+- **Brand Name**: Fourth
+- **Primary Color**: #0C4A7D (Dark Blue)
+- **Logo Strategy**: White logos for dark UI theme
+  - Collapsed sidebar icon: `Fourth_white_icon.png` (484x434px)
+  - Expanded sidebar logo: `Fourth_White_logo.png` (1742x434px)
+  - Favicon: `Fourth_icon.png` (484x434px)
+- **Tagline**: Keep as "Workflow Automation" (no changes for now)
+
+### Files to Modify
+- Theme colors: `packages/frontend/@n8n/design-system/src/css/_tokens.scss`
+- Dark theme: `packages/frontend/@n8n/design-system/src/css/_tokens.dark.scss`
+- Logo icon: `packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-icon.svg`
+- Logo text: `packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-text.svg`
+- Favicon: `packages/frontend/editor-ui/public/favicon.ico`
+- Window title: `packages/frontend/editor-ui/index.html`
+- Document title: `packages/frontend/editor-ui/src/app/composables/useDocumentTitle.ts`
+- Localization: `packages/frontend/@n8n/i18n/src/locales/en.json`
+
+### Documentation Changes
+- Renamed `CHANGES.md` → `FOURTH_CHANGES.md`
+- Renamed `SETUP.md` → `FOURTH_SETUP.md`
+
 ## Pending Tasks
 
-### White-labeling (Not Started)
-- Theme color customization (`_tokens.scss`, `_tokens.dark.scss`)
-- Logo replacement (SVG files in design-system)
-- Brand text updates (i18n localization)
-- Favicon updates
+### White-labeling (In Progress)
+- ✅ Branding decisions documented
+- ⏳ Theme color customization
+- ⏳ Logo conversion from PNG to SVG
+- ⏳ Logo replacement in design-system
+- ⏳ Favicon generation and replacement
+- ⏳ Brand text updates (i18n localization)
+- ⏳ Window title updates
+- ⏳ Rebuild and test
+- ⏳ Rebuild Docker images with Fourth branding
 
 ### Production Deployment (Future)
 - Push images to container registry
