@@ -97,6 +97,53 @@ docker-compose up -d
 
 Each environment has separate databases - owner accounts and data are NOT shared.
 
+## Git Workflow
+
+### Working with Branches
+
+```bash
+# Create a new feature branch
+git checkout -b feat/your-feature-name
+
+# Make your changes and commit
+git add .
+git commit -m "feat: description of changes"
+
+# View branch status
+git branch -v
+```
+
+### Merging to Your Fork's Master
+
+Since this is your personal fork, merge directly instead of creating PRs:
+
+```bash
+# Switch to master
+git checkout master
+
+# Merge your feature branch
+git merge feat/your-feature-name
+
+# Push to your fork
+git push origin master
+
+# Optional: Delete merged feature branch
+git branch -d feat/your-feature-name
+```
+
+### Checking Remote Configuration
+
+```bash
+# Verify remotes
+git remote -v
+
+# Should show:
+# origin    https://github.com/YOUR-USERNAME/n8n_fourth.git (your fork)
+# upstream  https://github.com/n8n-io/n8n.git (original repo)
+```
+
+**Note:** Always push to `origin` (your fork), not `upstream` (original n8n repo).
+
 ## Useful Commands
 
 ```bash
