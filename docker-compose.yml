@@ -1,0 +1,40 @@
+services:
+  n8n:
+    image: n8nio/n8n:local
+    container_name: n8n
+    ports:
+      - "5679:5678"  # Using 5679 to avoid conflict with your dev instance
+    environment:
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_RUNNERS_AUTH_TOKEN=my-secure-local-token-123
+      # Allow Python runner
+      - N8N_RUNNERS_NATIVE_PYTHON_ENABLED=true
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - n8n-network
+    restart: unless-stopped
+
+  python-runner:
+    image: n8nio/runners:local
+    container_name: n8n-python-runner
+    environment:
+      - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_AUTH_TOKEN=my-secure-local-token-123
+      - N8N_RUNNERS_MAX_CONCURRENCY=5
+    depends_on:
+      - n8n
+    networks:
+      - n8n-network
+    restart: unless-stopped
+
+volumes:
+  n8n_data:
+    driver: local
+
+networks:
+  n8n-network:
+    driver: bridge
+
