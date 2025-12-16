@@ -45,13 +45,21 @@ This document tracks high-level changes made to the n8n fork.
 ## 2024-12-15 - White-labeling Configuration
 
 ### Branding Decisions
-- **Brand Name**: Fourth
+- **Brand Name**: Fourth Intelligence Studio
+- **Short Name**: Fourth (for UI where space is limited)
 - **Primary Color**: #0C4A7D (Dark Blue)
 - **Logo Strategy**: White logos for dark UI theme
   - Collapsed sidebar icon: `Fourth_white_icon.png` (484x434px)
   - Expanded sidebar logo: `Fourth_White_logo.png` (1742x434px)
   - Favicon: `Fourth_icon.png` (484x434px)
 - **Tagline**: Keep as "Workflow Automation" (no changes for now)
+
+### Docker Naming Convention
+- **Image names**: `fourth/intelligence-studio:local`, `fourth/studio-runners:local`
+- **Container names**: `fourth-intelligence-studio`, `fourth-studio-python-runner`
+- **Volume name**: `fourth_intelligence_studio_data`
+- **Network name**: `fourth-studio-network`
+- **Compose file**: `docker-compose.fourth.yml`
 
 ### Files to Modify
 - Theme colors: `packages/frontend/@n8n/design-system/src/css/_tokens.scss`

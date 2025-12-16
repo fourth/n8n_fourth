@@ -1,0 +1,39 @@
+services:
+  fourth-intelligence-studio:
+    image: fourth/intelligence-studio:local
+    container_name: fourth-intelligence-studio
+    ports:
+      - "5680:5678"  # Fourth Intelligence Studio on port 5680
+    environment:
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_RUNNERS_AUTH_TOKEN=fourth-studio-secure-token-456
+      - N8N_RUNNERS_NATIVE_PYTHON_ENABLED=true
+    volumes:
+      - fourth_intelligence_studio_data:/home/node/.n8n
+    networks:
+      - fourth-studio-network
+    restart: unless-stopped
+
+  fourth-studio-python-runner:
+    image: fourth/studio-runners:local
+    container_name: fourth-studio-python-runner
+    environment:
+      - N8N_RUNNERS_TASK_BROKER_URI=http://fourth-intelligence-studio:5679
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_AUTH_TOKEN=fourth-studio-secure-token-456
+      - N8N_RUNNERS_MAX_CONCURRENCY=5
+    depends_on:
+      - fourth-intelligence-studio
+    networks:
+      - fourth-studio-network
+    restart: unless-stopped
+
+volumes:
+  fourth_intelligence_studio_data:
+    driver: local
+
+networks:
+  fourth-studio-network:
+    driver: bridge
+
