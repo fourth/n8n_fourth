@@ -75,18 +75,32 @@ This document tracks high-level changes made to the n8n fork.
 - Renamed `CHANGES.md` → `FOURTH_CHANGES.md`
 - Renamed `SETUP.md` → `FOURTH_SETUP.md`
 
-## Pending Tasks
-
-### White-labeling (In Progress)
+## Completed White-labeling Tasks
 - ✅ Branding decisions documented
-- ⏳ Theme color customization
-- ⏳ Logo conversion from PNG to SVG
-- ⏳ Logo replacement in design-system
-- ⏳ Favicon generation and replacement
-- ⏳ Brand text updates (i18n localization)
-- ⏳ Window title updates
-- ⏳ Rebuild and test
-- ⏳ Rebuild Docker images with Fourth branding
+- ✅ Theme color customization (#0C4A7D - HSL: 204, 64%, 27%)
+- ✅ Logo conversion from PNG to SVG (embedded data URIs)
+- ✅ Logo replacement in design-system (logo-icon.svg, logo-text.svg)
+- ✅ Favicon generation and replacement
+- ✅ Brand text updates (i18n localization with `_brand.name` key - initial 5 keys)
+- ✅ **Comprehensive i18n replacement** (~94 user-facing "n8n" → "Fourth" replacements)
+- ✅ Window title updates (index.html, useDocumentTitle.ts)
+- ✅ Rebuild and test (39 packages built successfully)
+- ✅ Local testing at http://localhost:5678
+- ✅ Docker images rebuilt with Fourth branding (n8nio/n8n:local, n8nio/runners:local)
+
+## Next Steps
+
+### Tag Docker Images with Fourth Branding
+```bash
+docker tag n8nio/n8n:local fourth/intelligence-studio:local
+docker tag n8nio/runners:local fourth/studio-runners:local
+```
+
+### Test Fourth Intelligence Studio in Docker
+```bash
+docker-compose -f docker-compose.fourth.yml up -d
+# Access at http://localhost:5680
+```
 
 ### Production Deployment (Future)
 - Push images to container registry
