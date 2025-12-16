@@ -131,3 +131,70 @@ docker-compose -f docker-compose.fourth.yml up --build -d
 - Set up PostgreSQL database
 - Configure ingress/load balancer
 
+---
+
+## 2024-12-16 - White-labeling Research & Planning
+
+### User Testing & Discovery Phase
+- Tested Fourth-branded Docker instance alongside vanilla n8n
+- User identified 15 categories of remaining n8n references in UI:
+  1. Sidebar logo display issues (PNG→SVG conversion problem)
+  2. "See more templates" links to n8n.io
+  3. Template detail pages with n8n documentation links
+  4. "Upgrade" buttons linking to n8n pricing
+  5. Help menu with all external links to n8n resources
+  6. Settings → Usage and Plan page with n8n subscription links
+  7. Settings pages with "Learn more" links to n8n docs
+  8. n8n API documentation link
+  9. Community Nodes installation with n8n references
+  10. Migration Report with n8n text and doc links
+  11. About dialog with GitHub, license, and debug info
+  12. Universal node "Docs" and "I wish..." feedback links
+  13. Built-in nodes with "n8n" in names (n8n Form, etc.)
+  14. Demo workflow names mentioning n8n
+  15. GitHub star badge in header
+
+### Technical Research Completed
+- Mapped all 15 reference categories to specific source files
+- Identified configuration options vs. hardcoded values
+- Documented control mechanisms:
+  - GitHub badge: Controlled by telemetry setting (`N8N_DIAGNOSTICS_ENABLED`)
+  - Node docs/feedback links: Currently hardcoded
+  - Help menu: Defined in MainSidebar component
+  - Upgrade buttons: Auto-hide with Enterprise license
+- Located all affected files with line numbers
+- Determined implementation complexity and priority
+
+### Documentation Created
+- **`FOURTH_WHITELABELING_PLAN.md`**: Complete implementation plan
+  - 15 items organized by priority (P0-P3)
+  - Estimated effort: 20-25 hours total
+  - Phase-based implementation strategy
+  - Testing checklist
+  - Environment variable recommendations
+- **`FOURTH_REMAINING_REFERENCES.md`**: Updated with detailed technical findings
+  - File locations and code snippets
+  - Configuration options analysis
+  - GitHub repository renaming guidance
+  - Questions to ask n8n before implementation
+  - Priority matrix and recommendations
+
+### Key Findings
+1. **Logo Issue**: PNG embedded as data URI in SVG - needs proper vector conversion
+2. **Configuration Options**: GitHub badge can be hidden via `N8N_DIAGNOSTICS_ENABLED=false`
+3. **Node Renaming**: Affects 6+ nodes in `packages/nodes-base/nodes/`
+4. **Help Resources**: All external links hardcoded in `MainSidebar.vue`
+5. **Template Library**: May be able to self-host or disable entirely
+
+### Decision Points
+- **Before implementation**: Consult with n8n on white-labeling policy
+- **Configuration vs. Hardcoding**: Prefer env variables for upgrade-friendliness
+- **Template Library**: Keep for now, revisit after n8n consultation
+- **License Verification**: Test Enterprise license behavior on upgrade prompts
+
+### Implementation Status
+- ✅ Research completed
+- ✅ Documentation created
+- ✅ Plan reviewed with user
+- ⏸️ **On hold**: Awaiting n8n consultation before making code changes
+

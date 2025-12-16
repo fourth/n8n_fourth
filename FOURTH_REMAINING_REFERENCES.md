@@ -422,3 +422,265 @@ This document tracks remaining references to "n8n" brand, n8n.io links, or other
 - Each entry will include: location, screenshot reference (if applicable), and analysis
 - Some references may be external links or embedded content that cannot be changed
 
+---
+
+## Technical Research Findings (Completed 2024-12-16)
+
+This section contains detailed technical research on how to address each reference, including file locations, configuration options, and implementation approaches. A complete implementation plan is available in `FOURTH_WHITELABELING_PLAN.md`.
+
+### Configuration vs. Hardcoding
+
+Several references can be controlled via configuration rather than code changes:
+
+#### 1. GitHub Star Badge (Reference #15)
+**Configuration File**: [`packages/frontend/editor-ui/src/app/components/MainHeader/MainHeader.vue:85-91`](packages/frontend/editor-ui/src/app/components/MainHeader/MainHeader.vue)
+
+**Current Logic**:
+```typescript
+const showGitHubButton = computed(
+	() =>
+		!isEnterprise.value &&              // NOT in enterprise/queue mode
+		!settingsStore.settings.inE2ETests && // NOT in E2E tests
+		!githubButtonHidden.value &&         // NOT hidden by user click
+		isTelemetryEnabled.value,            // Telemetry IS enabled
+);
+```
+
+**Control Options**:
+1. **Environment Variable**: Set `N8N_DIAGNOSTICS_ENABLED=false` (disables telemetry → hides button)
+2. **Local Storage**: User clicks X button → sets `N8N_HIDE_HIDE_GITHUB_STAR_BUTTON=true`
+3. **Queue Mode**: Enable `N8N_EXECUTIONS_MODE=queue` (makes it "enterprise")
+4. **Hardcode**: Change computed to always return `false`
+
+**Recommendation**: Use environment variable for clean white-labeling.
+
+---
+
+#### 2. Node Documentation Links (Reference #12)
+**Files**:
+- [`packages/frontend/editor-ui/src/features/ndv/settings/components/NodeSettingsTabs.vue:117-126`](packages/frontend/editor-ui/src/features/ndv/settings/components/NodeSettingsTabs.vue)
+- [`packages/frontend/editor-ui/src/app/composables/useNodeDocsUrl.ts`](packages/frontend/editor-ui/src/app/composables/useNodeDocsUrl.ts)
+- [`packages/frontend/editor-ui/src/app/constants/urls.ts:1-2`](packages/frontend/editor-ui/src/app/constants/urls.ts)
+
+**Current Logic**: Docs URL generated per-node from `BUILTIN_NODES_DOCS_URL` constant
+
+**Control Options**:
+1. **Hardcode**: Override `documentationUrl` computed to return `''`
+2. **Environment Variable**: Add `N8N_DOCS_BASE_URL` check (requires code change)
+3. **Conditional**: Check white-label flag before rendering docs tab
+
+**Recommendation**: Hardcode for simplicity, or add env variable for flexibility.
+
+---
+
+#### 3. Feature Request "I wish..." Link (Reference #12)
+**Files**:
+- [`packages/frontend/editor-ui/src/features/ndv/shared/views/NodeDetailsView.vue:307-312`](packages/frontend/editor-ui/src/features/ndv/shared/views/NodeDetailsView.vue)
+- [`packages/frontend/editor-ui/src/app/constants/urls.ts:17`](packages/frontend/editor-ui/src/app/constants/urls.ts) - `BASE_NODE_SURVEY_URL`
+
+**Current Logic**:
+```typescript
+const featureRequestUrl = computed(() => {
+	if (!activeNodeType.value) return '';
+	return `${BASE_NODE_SURVEY_URL}${activeNodeType.value.name}`;
+});
+```
+
+**Control Options**:
+1. **Hardcode**: Return empty string
+2. **Environment Variable**: Add `N8N_FEATURE_REQUEST_URL` (empty = hide)
+3. **Point to Fourth feedback**: Set custom URL
+
+**Recommendation**: Hardcode to empty string (no existing config option).
+
+---
+
+### File Locations for Key Changes
+
+#### Logo Rendering Issue (Reference #1)
+**Problem**: PNG embedded as data URI in SVG causes display issues
+
+**Files**:
+- [`packages/frontend/@n8n/design-system/src/components/N8nLogo/Logo.vue`](packages/frontend/@n8n/design-system/src/components/N8nLogo/Logo.vue) - Logo component
+- [`packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-icon.svg`](packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-icon.svg) - Icon (collapsed sidebar)
+- [`packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-text.svg`](packages/frontend/@n8n/design-system/src/components/N8nLogo/logo-text.svg) - Logo with text (expanded)
+
+**Solution**: Convert Fourth logo PNGs to proper vector SVG format
+- Use design tool (Figma/Illustrator) or online vectorizer
+- Replace data URI embedded SVGs with clean vector SVG code
+- Adjust viewBox dimensions to match Fourth logo aspect ratio
+
+---
+
+#### Core Node Renaming (Reference #13)
+**Nodes to Update**:
+1. **n8n node** → **Fourth**
+   - File: [`packages/nodes-base/nodes/N8n/N8n.node.ts:16-22`](packages/nodes-base/nodes/N8n/N8n.node.ts)
+   - Change: `displayName: 'Fourth'`, `description: '...on your Fourth instance'`
+
+2. **n8n Form** → **Fourth Form**
+   - File: [`packages/nodes-base/nodes/Form/Form.node.ts:266-273`](packages/nodes-base/nodes/Form/Form.node.ts)
+   - Change: `displayName: 'Fourth Form'`, `description: 'Generate webforms in Fourth...'`
+
+3. **n8n Form Trigger** → **Fourth Form Trigger**
+   - File: [`packages/nodes-base/nodes/Form/FormTrigger.node.ts`](packages/nodes-base/nodes/Form/FormTrigger.node.ts)
+   - Multiple versions in v1/ and v2/ subdirectories
+
+4. **Form node notices**:
+   - File: [`packages/nodes-base/nodes/Form/Form.node.ts:303`](packages/nodes-base/nodes/Form/Form.node.ts)
+   - Change: `displayName: 'A Fourth Form Trigger node must be set up...'`
+
+5. **Execute Sub-workflow**:
+   - Search: `grep -r "other n8n workflows" packages/nodes-base/nodes/`
+   - Change description text
+
+6. **Training nodes**:
+   - Search: `grep -r "(n8n training)" packages/nodes-base/nodes/`
+   - Remove suffix or replace with "(Fourth training)"
+
+---
+
+#### Help Menu Links (Reference #5)
+**File**: [`packages/frontend/editor-ui/src/app/components/MainSidebar.vue:185-243`](packages/frontend/editor-ui/src/app/components/MainSidebar.vue)
+
+**External Links Defined**:
+```typescript
+// From externalLinks.ts
+QUICKSTART_VIDEO: 'https://www.youtube.com/watch?v=4cQWJViybAQ'
+DOCUMENTATION: 'https://docs.n8n.io?utm_source=n8n_app...'
+FORUM: 'https://community.n8n.io?utm_source=n8n_app...'
+COURSES: 'https://docs.n8n.io/courses/'
+```
+
+**Options**:
+1. Remove all external link children from help menu
+2. Keep only "About" submenu item
+3. Point to Fourth's own resources (requires hosting docs/forum)
+
+---
+
+#### About Dialog (Reference #11)
+**File**: [`packages/frontend/editor-ui/src/app/components/AboutModal.vue`](packages/frontend/editor-ui/src/app/components/AboutModal.vue)
+
+**Changes Needed**:
+- **Line 76**: Source Code link to `https://github.com/n8n-io/n8n`
+  - Option 1: Hide link (`v-if="false"`)
+  - Option 2: Update to Fourth's repo (can be renamed without breaking local work)
+  
+- **Lines 84-86**: License text via i18n key `about.n8nLicense`
+  - Change to: "Sustainable Use License + Fourth Enterprise License"
+  
+- **Lines 94-96**: Third-party licenses link
+  - Downloads from backend API endpoint
+  - Header text mentions "n8n" - requires backend changes
+  
+- **Lines 112-114**: Debug info link
+  - Can hide entire row
+  - Keep field names like `n8nVersion` for technical compatibility
+
+---
+
+#### Template Library (Reference #2, #3)
+**Files**:
+- [`packages/frontend/editor-ui/src/app/components/MainSidebar.vue:138-172`](packages/frontend/editor-ui/src/app/components/MainSidebar.vue) - Menu items
+- [`packages/frontend/editor-ui/src/app/constants/urls.ts:28-35`](packages/frontend/editor-ui/src/app/constants/urls.ts) - Template URLs
+- Multiple modal components for template display
+
+**URLs**:
+```typescript
+TEMPLATES_URLS = {
+	DEFAULT_API_HOST: 'https://api.n8n.io/api/',
+	BASE_WEBSITE_URL: 'https://n8n.io/workflows/',
+	UTM_QUERY: { utm_source: 'n8n_app', utm_medium: 'template_library' }
+}
+```
+
+**Decision**: Keep for now, revisit after consulting with n8n about self-hosted template library options.
+
+---
+
+#### Demo Workflows (Reference #14)
+**File**: [`packages/frontend/editor-ui/src/features/workflows/templates/utils/samples/easy_ai_starter.json:2`](packages/frontend/editor-ui/src/features/workflows/templates/utils/samples/easy_ai_starter.json)
+
+**Change**: Simple find/replace
+```json
+"name": "Demo: My first AI Agent in Fourth",
+```
+
+---
+
+### GitHub Repository Renaming
+
+**Can rename fork**: Yes, via GitHub Settings → Repository name
+
+**Impact**:
+- ✅ GitHub auto-redirects old URLs
+- ✅ Local folder name: No impact (stays `n8n_fourth` unless manually renamed)
+- ✅ Git remote: Auto-updates, no action needed
+- ✅ Existing clones: Continue working (GitHub redirect handles it)
+
+**Optional**: Rename local folder for consistency
+```bash
+mv /Users/boyan.asenov/Projects/Cursor/n8n_fourth /Users/boyan.asenov/Projects/Cursor/fourth-intelligence-studio
+```
+
+---
+
+### Recommendations Before Consulting n8n
+
+**Questions to ask n8n**:
+
+1. **Licensing & Support**:
+   - What's the policy on white-labeling the UI?
+   - Are there enterprise license implications?
+   - Can we remove/replace help/documentation links?
+
+2. **Technical Guidance**:
+   - Recommended approach for hiding docs/feedback links?
+   - Is there a white-label mode flag we should use?
+   - Template library: Can we self-host or point to our own?
+
+3. **Branding**:
+   - Node names: Is it problematic to rename "n8n Form" to "Fourth Form"?
+   - About dialog: Can we remove GitHub source code links?
+   - Third-party licenses: How to update generated file headers?
+
+4. **Long-term Maintenance**:
+   - Configuration vs. code changes: Which is more upgrade-friendly?
+   - Will future n8n updates break white-labeling changes?
+   - Should we use environment variables for all external URLs?
+
+---
+
+### Priority Matrix
+
+| Priority | Item | Complexity | User Visibility | Config Option? |
+|----------|------|------------|-----------------|----------------|
+| P0 | Fix logo rendering | Medium | Very High | No |
+| P0 | Remove GitHub badge | Low | High | **Yes** (telemetry) |
+| P0 | Rename core nodes | Medium | High | No |
+| P1 | Remove help links | Low | Medium | No |
+| P1 | Hide node docs links | Low | High | No |
+| P1 | Hide feedback link | Low | Medium | No |
+| P1 | Customize About dialog | Medium | Medium | Partial |
+| P2 | Template library | High | Medium | **Maybe** (self-host) |
+| P2 | Community nodes text | Low | Low | No |
+| P2 | Migration report | Medium | Low | No |
+| P2 | Demo workflows | Low | Low | No |
+| P3 | Upgrade buttons | Low | Conditional | **Yes** (license) |
+| P3 | Settings links | Medium | Low | No |
+
+**Total Estimated Effort**: 20-25 hours for full implementation
+
+---
+
+## Next Steps
+
+1. **Consult with n8n** on white-labeling policy and recommendations
+2. **Review plan** with Fourth team to prioritize items
+3. **Decide on approach**: Configuration-based vs. hardcoded changes
+4. **Implement** in phases as outlined in `FOURTH_WHITELABELING_PLAN.md`
+5. **Test thoroughly** with both Community and Enterprise licenses
+
+All detailed implementation steps, code snippets, and file locations are documented in the full plan.
+
