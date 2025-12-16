@@ -154,6 +154,38 @@ docker-compose up -d
 docker-compose -f docker-compose.fourth.yml up -d
 ```
 
+### Browser Cookie Conflicts ("Unauthorized" Errors)
+
+**Problem**: When running both instances simultaneously, you see errors like:
+- "Problem loading workflows - Unauthorized"
+- "Error loading data tables - Unauthorized"  
+- "Error fetching workflows - Unauthorized"
+
+**Cause**: Both instances run on `localhost` (different ports). Browsers **share cookies across all localhost ports**, so when you log into one instance then access the other, the browser sends the wrong session cookie.
+
+**Solution** (choose one):
+
+1. **Use Incognito/Private Window** ⭐ Recommended
+   ```
+   Normal browser:     http://localhost:5679 (Vanilla)
+   Incognito/Private:  http://localhost:5680 (Fourth)
+   ```
+
+2. **Use Different Hostnames**
+   ```
+   http://localhost:5679   (Vanilla)
+   http://127.0.0.1:5680   (Fourth)
+   ```
+
+3. **Use Different Browser Profiles**
+   - Chrome/Edge: Create separate profiles
+   - Firefox: Use Profile Manager
+
+4. **Clear Cookies Between Switches**
+   - DevTools → Application/Storage → Cookies → localhost → Delete all
+
+**Note**: The Docker containers are completely isolated. This is purely a browser-side cookie issue.
+
 ## Architecture
 
 ```
