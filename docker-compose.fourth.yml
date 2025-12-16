@@ -38,9 +38,11 @@ services:
 
 volumes:
   fourth_intelligence_studio_data:
+    name: fourth-intelligence-studio-data
     driver: local
 
 networks:
   fourth-studio-network:
+    name: fourth-studio-network
     driver: bridge
 

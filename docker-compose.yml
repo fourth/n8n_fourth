@@ -32,9 +32,11 @@ services:
 
 volumes:
   n8n_data:
+    name: vanilla-n8n-data
     driver: local
 
 networks:
   n8n-network:
+    name: vanilla-n8n-network
     driver: bridge
 
