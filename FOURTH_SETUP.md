@@ -97,6 +97,37 @@ docker-compose up -d
 
 Each environment has separate databases - owner accounts and data are NOT shared.
 
+## Running Multiple Instances (Vanilla + Fourth)
+
+You can run both vanilla n8n and Fourth Intelligence Studio simultaneously for testing:
+
+```bash
+# Start vanilla n8n on port 5679
+docker-compose up -d
+
+# Start Fourth on port 5680
+docker-compose -f docker-compose.fourth.yml up -d
+```
+
+### ⚠️ Browser Cookie Conflict
+
+**Problem**: When accessing both instances, you'll see "Unauthorized" errors:
+- "Problem loading workflows - Unauthorized"
+- "Error loading data tables - Unauthorized"
+
+**Cause**: Both run on `localhost` (different ports), and browsers share cookies across all localhost ports. Logging into one instance sends wrong cookies to the other.
+
+**Solution**: Use an **incognito/private window** for one instance:
+- Vanilla: `http://localhost:5679` (normal browser)
+- Fourth: `http://localhost:5680` (incognito/private window)
+
+**Alternative solutions**:
+- Use different hostnames: `localhost:5679` vs `127.0.0.1:5680`
+- Use separate browser profiles
+- Clear localhost cookies when switching
+
+See `DOCKER_REFERENCE.md` for detailed Docker management instructions.
+
 ## Git Workflow
 
 ### Working with Branches
