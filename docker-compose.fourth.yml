@@ -1,6 +1,10 @@
 services:
   fourth-intelligence-studio:
     image: fourth/intelligence-studio:local
+    build:
+      context: .
+      dockerfile: docker/images/n8n/Dockerfile
+      target: n8n
     container_name: fourth-intelligence-studio
     ports:
       - "5680:5678"  # Fourth Intelligence Studio on port 5680
@@ -17,6 +21,9 @@ services:
 
   fourth-studio-python-runner:
     image: fourth/studio-runners:local
+    build:
+      context: .
+      dockerfile: docker/images/runners/Dockerfile
     container_name: fourth-studio-python-runner
     environment:
       - N8N_RUNNERS_TASK_BROKER_URI=http://fourth-intelligence-studio:5679
