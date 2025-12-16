@@ -3690,7 +3690,7 @@
 	"settings.sso.settings.userRoleProvisioning.label": "User role provisioning",
 	"settings.sso.settings.userRoleProvisioning.help": "Manage instance and project roles from your SSO provider.",
 	"settings.sso.settings.userRoleProvisioning.help.linkText": "Link to docs",
-	"settings.sso.settings.userRoleProvisioning.option.disabled.label": "Managed in n8n",
+	"settings.sso.settings.userRoleProvisioning.option.disabled.label": "Managed in @:_brand.name",
 	"settings.sso.settings.userRoleProvisioning.option.instanceRole.label": "Instance role",
 	"settings.sso.settings.userRoleProvisioning.option.instanceAndProjectRoles.label": "Instance and project roles",
 	"settings.sso.settings.test": "Test settings",
