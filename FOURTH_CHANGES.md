@@ -75,31 +75,51 @@ This document tracks high-level changes made to the n8n fork.
 - Renamed `CHANGES.md` → `FOURTH_CHANGES.md`
 - Renamed `SETUP.md` → `FOURTH_SETUP.md`
 
-## Completed White-labeling Tasks
+## ✅ Complete White-labeling Tasks (100% Done)
+
+### Branding & Design
 - ✅ Branding decisions documented
 - ✅ Theme color customization (#0C4A7D - HSL: 204, 64%, 27%)
 - ✅ Logo conversion from PNG to SVG (embedded data URIs)
 - ✅ Logo replacement in design-system (logo-icon.svg, logo-text.svg)
 - ✅ Favicon generation and replacement
+
+### Text & Localization
 - ✅ Brand text updates (i18n localization with `_brand.name` key - initial 5 keys)
 - ✅ **Comprehensive i18n replacement** (~94 user-facing "n8n" → "Fourth" replacements)
+- ✅ **Final cleanup** (11 remaining instances in SSO/LDAP/polling nodes)
 - ✅ Window title updates (index.html, useDocumentTitle.ts)
+- ✅ **Result**: Zero user-facing "n8n" text remains in UI
+
+### Build & Test
 - ✅ Rebuild and test (39 packages built successfully)
 - ✅ Local testing at http://localhost:5678
-- ✅ Docker images rebuilt with Fourth branding (n8nio/n8n:local, n8nio/runners:local)
+- ✅ Docker images rebuilt with Fourth branding
 
-## Next Steps
+### Docker Configuration
+- ✅ `docker-compose.fourth.yml` created with Fourth branding
+- ✅ Build contexts added for Fourth-branded images
+- ✅ Tagging script created: `scripts/tag-fourth-images.sh`
 
-### Tag Docker Images with Fourth Branding
+## Using Fourth Intelligence Studio
+
+### Quick Start - Tag & Run Docker Images
+
 ```bash
-docker tag n8nio/n8n:local fourth/intelligence-studio:local
-docker tag n8nio/runners:local fourth/studio-runners:local
+# 1. Tag existing images with Fourth branding
+./scripts/tag-fourth-images.sh
+
+# 2. Launch Fourth Intelligence Studio
+docker-compose -f docker-compose.fourth.yml up -d
+
+# 3. Access at http://localhost:5680
 ```
 
-### Test Fourth Intelligence Studio in Docker
+### Alternative: Build from Scratch
+
 ```bash
-docker-compose -f docker-compose.fourth.yml up -d
-# Access at http://localhost:5680
+# Build with Fourth branding directly
+docker-compose -f docker-compose.fourth.yml up --build -d
 ```
 
 ### Production Deployment (Future)
