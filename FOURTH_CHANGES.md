@@ -100,6 +100,9 @@ This document tracks high-level changes made to the n8n fork.
 - ✅ `docker-compose.fourth.yml` created with Fourth branding
 - ✅ Build contexts added for Fourth-branded images
 - ✅ Tagging script created: `scripts/tag-fourth-images.sh`
+- ✅ Clean volume/network names (no confusing prefixes)
+  - Vanilla: `vanilla-n8n-data`, `vanilla-n8n-network`
+  - Fourth: `fourth-intelligence-studio-data`, `fourth-studio-network`
 
 ## Using Fourth Intelligence Studio
 
