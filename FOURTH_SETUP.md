@@ -90,6 +90,52 @@ docker-compose down
 docker-compose up -d
 ```
 
+## Fourth-Branded Docker Images
+
+### Building Fourth Images
+
+To build only the Fourth-branded Docker images (when on `feat/white-labeling` branch):
+
+```bash
+# Build Fourth-branded images
+pnpm build:docker:fourth
+
+# This creates:
+#   fourth/intelligence-studio:local (main app)
+#   fourth/studio-runners:local (Python task runner)
+```
+
+### Restarting Fourth Containers
+
+After rebuilding, restart the Fourth containers to use the new images:
+
+```bash
+# Stop and start with new image
+docker-compose -f docker-compose.fourth.yml down
+docker-compose -f docker-compose.fourth.yml up -d
+
+# Or just restart (uses existing image)
+docker-compose -f docker-compose.fourth.yml restart
+```
+
+**Note:** Use `down` then `up -d` to ensure the newly built image is used. The `restart` command reuses the existing container/image.
+
+### Building Vanilla Images
+
+To build vanilla n8n images (when on `master` branch):
+
+```bash
+# Switch to master branch
+git checkout master
+
+# Build vanilla images
+pnpm build:docker
+
+# This creates:
+#   n8nio/n8n:local
+#   n8nio/runners:local
+```
+
 ## Data Locations
 
 - **Local dev**: `~/.n8n/database.sqlite`
