@@ -72,7 +72,7 @@ onMounted(() => {
 }
 
 .logoText {
-	margin-left: var(--spacing--5xs);
+	margin-left: var(--spacing--2xs); // 8px - reduced from 12px
 	path {
 		fill: var(--color--text--shade-1);
 	}

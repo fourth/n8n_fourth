@@ -194,19 +194,35 @@
 	--variables-usage--syntax--color--background: var(--color--green-alpha-200);
 
 	// Button primary
-	--button--outline-color--primary--focus: var(--color--orange-alpha-300);
+	--button--outline-color--primary--focus: hsl(
+		var(--color--primary--h),
+		var(--color--primary--s),
+		var(--color--primary--l) / 0.35
+	);
 	--button--color--text--primary--disabled: var(--color--white-alpha-500);
 	--button--border-color--primary--disabled: transparent;
-	--button--color--background--primary--disabled: var(--color--orange-alpha-500);
+	--button--color--background--primary--disabled: hsl(
+		var(--color--primary--h),
+		var(--color--primary--s),
+		var(--color--primary--l) / 0.5
+	);
 
 	// Button secondary
 	--button--color--text--secondary: var(--color--neutral-150);
 	--button--border-color--secondary: var(--color--foreground);
 	--button--color--background--secondary: var(--color--background--light-2);
-	--button--color--text--secondary--hover-active-focus: var(--color--orange-250);
+	--button--color--text--secondary--hover-active-focus: var(--color--primary--tint-1);
 	--button--color--background--secondary--hover: var(--color--background--light-2);
-	--button--color--background--secondary--active-focus: var(--color--orange-alpha-100);
-	--button--outline-color--secondary--focus: var(--color--orange-alpha-300);
+	--button--color--background--secondary--active-focus: hsl(
+		var(--color--primary--h),
+		var(--color--primary--s),
+		var(--color--primary--l) / 0.1
+	);
+	--button--outline-color--secondary--focus: hsl(
+		var(--color--primary--h),
+		var(--color--primary--s),
+		var(--color--primary--l) / 0.35
+	);
 	--button--color--text--secondary--disabled: var(--color--white-alpha-500);
 	--button--border-color--secondary--disabled: var(--color--foreground);
 
