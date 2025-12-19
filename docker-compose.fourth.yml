@@ -9,6 +9,7 @@ services:
       - N8N_RUNNERS_ENABLED=true
       - N8N_RUNNERS_AUTH_TOKEN=fourth-studio-secure-token-456
       - N8N_RUNNERS_NATIVE_PYTHON_ENABLED=true
+      - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0  # Listen on all interfaces for external runners
       - WEBHOOK_URL=http://localhost:5680/
     volumes:
       - fourth_intelligence_studio_data:/home/node/.n8n

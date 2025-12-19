@@ -128,7 +128,6 @@ docker run -p 5680:5678 -e WEBHOOK_URL=http://localhost:5680/ n8nio/n8n
      -d '{
        "reservation_id": "RES-2025-001234",
        "guest_id": "GUEST-98765",
-       "loyalty_tier": "Gold",
        "arrival_date": "2025-12-22",
        "party_size": 4,
        "occasion": "Anniversary",
@@ -169,10 +168,12 @@ Add a **Code node** immediately after the Webhook node to validate and ensure pa
 
 ```javascript
 // Validate and normalize webhook payload
-const payload = $input.item.json;
+// Webhook node outputs: { headers, params, query, body }
+// The actual payload is in the 'body' property
+const payload = $input.item.json.body;
 
-// Check required fields
-const requiredFields = ['reservation_id', 'guest_id', 'loyalty_tier', 'arrival_date', 'party_size'];
+// Check required fields (loyalty_tier is NOT in payload - will be fetched from CRM)
+const requiredFields = ['reservation_id', 'guest_id', 'arrival_date', 'party_size'];
 const missingFields = requiredFields.filter(field => !payload[field]);
 
 if (missingFields.length > 0) {
@@ -184,11 +185,11 @@ return [{
   json: {
     reservation_id: payload.reservation_id,
     guest_id: payload.guest_id,
-    loyalty_tier: payload.loyalty_tier,
+    // Note: loyalty_tier will be fetched from CRM in Phase 2 using guest_id
     arrival_date: payload.arrival_date,
     party_size: Number(payload.party_size), // Ensure it's a number
     occasion: payload.occasion || null,
-    special_requests: payload.special_requests || ''
+    special_requests: payload.special_requests || null
   }
 }];
 ```
